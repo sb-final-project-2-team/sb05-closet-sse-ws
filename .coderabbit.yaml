@@ -1,0 +1,40 @@
+language: "ko-KR"
+early_access: false
+
+reviews:
+  profile: "chill"               # 과도한 잔소리 방지
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: false
+  collapse_walkthrough: false
+
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches: ["main", "develop"]
+
+  # 🔹 리뷰 기준 문서 명시 (가장 중요)
+  path_instructions:
+    - path: "**/*.java"
+      instructions: |
+        This project follows strict backend coding conventions.
+        Review all changes based on the rules defined in:
+        .coderabbit/backend-coding-guidelines.md
+    
+        Key principles:
+        - Service methods return Response DTOs only
+        - Entities must not be returned directly
+        - CRUD methods use create / find / update / delete
+        - Domain-specific methods are allowed when business intent exists
+        - Soft delete queries are examples, not absolute rules
+        - Login and logout must be handled by Security Filters or Handlers
+        - Controllers must not implement authentication logic
+        - JWT validation must occur in filters
+        - Avoid Optional.get() and JpaRepository method redefinition
+    
+        Focus on architectural and responsibility violations.
+        Avoid nitpicking about formatting or trivial naming.
+
+chat:
+  auto_reply: true

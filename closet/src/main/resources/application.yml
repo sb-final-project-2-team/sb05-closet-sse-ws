@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: closet
+  datasource:
+    url: jdbc:h2:mem:closet;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: your_email@gmail.com
+    password: app-password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
