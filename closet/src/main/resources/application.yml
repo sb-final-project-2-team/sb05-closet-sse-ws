@@ -1,3 +1,6 @@
+server:
+  port: 8081 # 포트 중복 방지
+
 spring:
   application:
     name: closet

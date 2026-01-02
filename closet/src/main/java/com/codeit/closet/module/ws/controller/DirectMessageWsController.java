@@ -3,7 +3,7 @@ package com.codeit.closet.module.ws.controller;
 import com.codeit.closet.module.ws.config.DirectMessageApiClient;
 import com.codeit.closet.module.ws.dto.DirectMessageCreateRequest;
 import com.codeit.closet.module.ws.dto.DirectMessageDTO;
-import com.codeit.closet.module.ws.dto.DirectMessagePersistRequest;
+import com.codeit.closet.module.ws.dto.DirectMessageSaveRequest;
 import com.codeit.closet.module.ws.util.DmKeyUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -23,13 +23,13 @@ public class DirectMessageWsController {
 
         String dmKey = DmKeyUtil.of(req.senderId(), req.receiverId());
 
-        DirectMessagePersistRequest persistReq = new DirectMessagePersistRequest(
+        DirectMessageSaveRequest saveReq = new DirectMessageSaveRequest(
                 req.receiverId(),
                 req.senderId(),
                 req.content()
         );
 
-        DirectMessageDTO saved = directMessageApiClient.persist(persistReq);
+        DirectMessageDTO saved = directMessageApiClient.save(saveReq);
 
         String destination = "/sub/direct-messages_" + dmKey;
         messagingTemplate.convertAndSend(destination, saved);

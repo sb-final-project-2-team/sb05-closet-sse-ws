@@ -1,7 +1,7 @@
 package com.codeit.closet.module.ws.config;
 
 import com.codeit.closet.module.ws.dto.DirectMessageDTO;
-import com.codeit.closet.module.ws.dto.DirectMessagePersistRequest;
+import com.codeit.closet.module.ws.dto.DirectMessageSaveRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -12,7 +12,7 @@ public class DirectMessageApiClient {
 
     private final RestClient dmApiRestClient;
 
-    public DirectMessageDTO persist(DirectMessagePersistRequest request) {
+    public DirectMessageDTO save(DirectMessageSaveRequest request) {
         return dmApiRestClient.post()
                 .uri("/api/direct-messages")
                 .body(request)
