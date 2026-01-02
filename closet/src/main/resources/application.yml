@@ -16,3 +16,6 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: true
+dm:
+  api:
+    base-url: http://api:8080 # api 서버 호출 주소
