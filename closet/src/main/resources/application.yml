@@ -11,6 +11,18 @@ spring:
     username: closet-user
     password: closet_1234
 
+  cache:
+    # type: caffeine
+    type: redis
+    cache-names:
+      - users # 추가 해주시면 됩니다. (yml 리스트 형식으로)
+    redis:
+      enable-statistics: true
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
   jpa:
     hibernate:
       ddl-auto: update   # (dev환경이면 update OK / prod는 validate 권장)
@@ -23,3 +35,10 @@ dm:
   api:
 #    base-url: http://api:8080 # api 서버 호출 주소 (도커)
     base-url: http://localhost:8080 # api 서버 호출 주소 (로컬)
+
+security:
+  jwt:
+    issuer: closet
+    secret: ${JWT_SECRET:376352270f35f8070b7a7e2ae299ca43}
+    access-token-validity-seconds: 3600 # 1시간
+    refresh-token-validity-seconds: 1204000 # 14일

@@ -1,16 +1,22 @@
 package com.codeit.closet.module.ws.controller;
 
+import com.codeit.closet.common.security.ClosetUserDetails;
 import com.codeit.closet.module.ws.config.DirectMessageApiClient;
 import com.codeit.closet.module.ws.dto.DirectMessageCreateRequest;
 import com.codeit.closet.module.ws.dto.DirectMessageDTO;
 import com.codeit.closet.module.ws.dto.DirectMessageSaveRequest;
 import com.codeit.closet.module.ws.util.DmKeyUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 
+import java.util.UUID;
 
+
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class DirectMessageWsController {
@@ -19,13 +25,21 @@ public class DirectMessageWsController {
     private final DirectMessageApiClient directMessageApiClient;
 
     @MessageMapping("/direct-messages_send")
-    public void send(DirectMessageCreateRequest req) {
+    public void send(
+            @AuthenticationPrincipal ClosetUserDetails userDetails,
+            DirectMessageCreateRequest req
+    ) {
+        if (userDetails.getUserDTO() == null) {
+            throw new IllegalStateException("ClosetUserDetails.userDTO is null");
+        }
 
-        String dmKey = DmKeyUtil.of(req.senderId(), req.receiverId());
+        UUID senderId = userDetails.getUserDTO().id();
+        UUID receiverId = req.receiverId();
+
+        String dmKey = DmKeyUtil.of(senderId, receiverId);
 
         DirectMessageSaveRequest saveReq = new DirectMessageSaveRequest(
-                req.receiverId(),
-                req.senderId(),
+                receiverId,
                 req.content()
         );
 
