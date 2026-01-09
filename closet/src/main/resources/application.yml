@@ -33,8 +33,7 @@ spring:
     show-sql: true
 dm:
   api:
-#    base-url: http://api:8080 # api 서버 호출 주소 (도커)
-    base-url: http://localhost:8080 # api 서버 호출 주소 (로컬)
+    base-url: ${DM_API_BASE_URL:http://localhost:8080}
 
 security:
   jwt:
