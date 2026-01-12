@@ -2,6 +2,8 @@ package com.codeit.closet.common.security.jwt;
 
 
 import com.codeit.closet.common.security.ClosetUserDetails;
+
+import java.util.Map;
 import java.util.UUID;
 
 import com.codeit.closet.common.security.user.UserDTO;
@@ -58,6 +60,12 @@ public class JwtAuthenticationChannelInterceptor implements ChannelInterceptor {
                         );
 
                 accessor.setUser(authentication);
+
+                // WS 세션에 토큰 저장: WS → API 호출할 때 사용
+                Map<String, Object> sessionAttrs = accessor.getSessionAttributes();
+                if (sessionAttrs != null) {
+                    sessionAttrs.put("ACCESS_TOKEN", token);
+                }
             } else {
                 throw new RuntimeException("INVALID_TOKEN");
             }
