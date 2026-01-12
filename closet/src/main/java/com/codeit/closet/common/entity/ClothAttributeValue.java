@@ -34,9 +34,4 @@ public class ClothAttributeValue {
     @Column(name = "value", nullable = false, length = 255)
     private String value;
 
-    @CreationTimestamp
-    @Column(name = "created_at", updatable = false, nullable = false)
-    private Instant createdAt;
-
-
 }
