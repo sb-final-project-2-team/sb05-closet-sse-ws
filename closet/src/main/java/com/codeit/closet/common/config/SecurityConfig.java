@@ -2,7 +2,6 @@ package com.codeit.closet.common.config;
 
 import com.codeit.closet.common.redis.RedisLockProvider;
 import com.codeit.closet.common.entity.UserRole;
-import com.codeit.closet.common.security.SpaCsrfTokenRequestHandler;
 import com.codeit.closet.common.security.jwt.JwtRegistry;
 import com.codeit.closet.common.security.jwt.JwtTokenProvider;
 import com.codeit.closet.common.security.jwt.RedisJwtRegistry;
@@ -18,7 +17,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 
 import java.util.UUID;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -31,12 +29,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler()))
-        ;
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/ws/**").permitAll()
+                        .anyRequest().denyAll()
+                );
         return http.build();
     }
+
     @Bean
     public RoleHierarchy roleHierarchy() {
         return RoleHierarchyImpl.withDefaultRolePrefix()
