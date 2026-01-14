@@ -41,3 +41,18 @@ security:
     secret: ${JWT_SECRET:376352270f35f8070b7a7e2ae299ca43}
     access-token-validity-seconds: 3600 # 1시간
     refresh-token-validity-seconds: 1204000 # 14일
+
+management:
+  server:
+    port: 9102
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus, metrics
+  endpoint:
+    health:
+      show-details: always
+  prometheus:
+    metrics:
+      export:
+        enabled: true
