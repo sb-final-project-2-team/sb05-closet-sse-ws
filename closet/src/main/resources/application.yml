@@ -48,8 +48,8 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
 
       properties:
-        spring.json.trusted.packages: "com.codeit.closet.module.sse.event"
-        spring.json.value.default.type: "com.codeit.closet.module.sse.event.NotificationEventMessage"
+        spring.json.trusted.packages: "com.codeit.closet.module.sse.dto,com.codeit.closet.common.entity"
+        spring.json.value.default.type: "com.codeit.closet.module.sse.dto.NotificationCreatedEventDTO"
         spring.json.use.type.headers: false
 
 
