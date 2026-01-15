@@ -39,6 +39,10 @@ public class DirectMessageWsController {
 
         UUID senderId = extractSenderId(principal);
 
+        if (request.senderId() != null && !request.senderId().equals(senderId)) {
+            throw new RuntimeException("SENDER_ID_MISMATCH");
+        }
+
         UUID receiverId = request.receiverId();
         String dmKey = DmKeyUtil.of(senderId, receiverId);
 
