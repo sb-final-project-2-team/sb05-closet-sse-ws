@@ -64,12 +64,14 @@ public class SseEmitterManager {
 		for (SseEmitter emitter : emitters) {
 			try {
 				emitter.send(SseEmitter.event()
+					.id(Instant.now().toString())
 					.name(eventName)
 					.data(data));
 			} catch (IOException e) {
 				log.warn("[SSE] 전송 실패, receiverId={}, reason={}",
 					receiverId, e.getMessage());
 				remove(receiverId, emitter);
+				emitter.completeWithError(e);
 			}
 		}
 	}
