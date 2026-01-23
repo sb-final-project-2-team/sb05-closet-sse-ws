@@ -38,18 +38,11 @@ spring:
 
     consumer:
       group-id: notification-group
-      auto-offset-reset: latest
+      auto-offset-reset: earliest #latest
 
-      # key = receiveId.toString()
-      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
-
-      # value(Json) -> DTO 역직렬화
-      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
-
-      properties:
-        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
-        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
-        spring.json.trusted.packages: "*"
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
