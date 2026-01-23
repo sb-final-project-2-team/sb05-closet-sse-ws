@@ -7,9 +7,9 @@ import com.codeit.closet.common.entity.NotificationLevel;
 
 public record NotificationCreatedEventDTO (
 	UUID id,
+	Instant createdAt,
 	UUID receiverId,
 	String title,
 	String content,
-	NotificationLevel level,
-	Instant createdAt
+	NotificationLevel level
 ) {}

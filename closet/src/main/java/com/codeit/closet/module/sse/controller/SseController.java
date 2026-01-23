@@ -40,11 +40,11 @@ public class SseController {
 
 		try {
 			emitter.send(SseEmitter.event()
-				.name("connect")
-				.data("SSE 연결 성공"));
+				.name("ping"));
 
 			log.info("[SSE] 인증 연결 성공, receiverId={}, 현재 연결 수 ={}",
 				receiverId, emitterManager.count(receiverId));
+
 
 		} catch (IOException e) {
 		    log.error("[SSE] 초기 메시지 전송 실패, receiverId={}, reason={}",
@@ -52,7 +52,6 @@ public class SseController {
 			emitterManager.remove(receiverId,emitter);
 			emitter.completeWithError(e);
 		}
-		log.info("[SSE] 쿠키 인증 연결 성공, receiverId={}", receiverId);
 		return emitter;
 	}
 }
