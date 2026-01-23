@@ -42,7 +42,7 @@ public class Feed {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "weather_id", nullable = false)
-    private WeatherRegion weather;
+    private WeatherData weather;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "feed_id")
