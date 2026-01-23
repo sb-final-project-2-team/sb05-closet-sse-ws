@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/ws/**").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
-                        .requestMatchers("/api/sse").permitAll()
+                        .requestMatchers("/api/sse/**").permitAll()
                         .anyRequest().denyAll()
                 );
         return http.build();
