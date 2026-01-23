@@ -10,15 +10,20 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class SseEmitterManager {
 
 	private static final long DEFAULT_TIMEOUT = 60L * 60L * 1000L; // 1 hour
 
 	private final ConcurrentHashMap<UUID, Set<SseEmitter>> emitterStore = new ConcurrentHashMap<>();
+	private final ObjectMapper objectMapper;
 
 	public SseEmitter add(UUID receiverId) {
 		SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
@@ -57,16 +62,19 @@ public class SseEmitterManager {
 		Set<SseEmitter> emitters = emitterStore.get(receiverId);
 
 		if (emitters == null || emitters.isEmpty()) {
-			log.debug("[SSE] 전송 대상 없음, receiverId={}", receiverId);
+			log.warn("[SSE] 전송 대상 없음, receiverId={}", receiverId);
 			return;
 		}
 
 		for (SseEmitter emitter : emitters) {
 			try {
+				String json = objectMapper.writeValueAsString(data);
+
 				emitter.send(SseEmitter.event()
-					.id(Instant.now().toString())
 					.name(eventName)
-					.data(data));
+					.data(json)
+				);
+
 			} catch (IOException e) {
 				log.warn("[SSE] 전송 실패, receiverId={}, reason={}",
 					receiverId, e.getMessage());
