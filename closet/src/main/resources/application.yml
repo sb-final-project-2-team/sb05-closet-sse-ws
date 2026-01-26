@@ -1,15 +1,23 @@
 server:
   port: 8081 # 포트 중복 방지
+  forward-headers-strategy: framework
+  servlet:
+    session:
+      cookie:
+        secure: true
+        same-site: none
 
 spring:
   application:
     name: closet
+  mvc:
+    dispatch-options-request: true
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/closet
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/closet}
     driver-class-name: org.postgresql.Driver
-    username: closet-user
-    password: closet_1234
+    username: ${DATABASE_USERNAME:closet-user}
+    password: ${DATABASE_PASSWORD:closet_1234}
 
   cache:
     # type: caffeine
@@ -25,7 +33,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update   # (dev환경이면 update OK / prod는 validate 권장)
+      ddl-auto: validate   # (dev환경이면 update OK / prod는 validate 권장)
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
