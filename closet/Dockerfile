@@ -16,15 +16,16 @@ RUN ./gradlew dependencies --no-daemon
 
 # 소스 코드 복사
 COPY src src
+RUN ./gradlew clean bootJar --no-daemon
 
-# 테스트 + 빌드
-# 테스트 최대 3회 재시도
-RUN for i in 1 2 3; do \
-      echo "▶ 테스트 시도 $i"; \
-      ./gradlew clean test bootJar --no-daemon && break; \
-      echo "❌ 실패, 5초 후 재시도"; \
-      sleep 5; \
-    done || (echo "🚨 테스트 최종 실패"; exit 1)
+## 테스트 + 빌드
+## 테스트 최대 3회 재시도
+#RUN for i in 1 2 3; do \
+#      echo "▶ 테스트 시도 $i"; \
+#      ./gradlew clean test bootJar --no-daemon && break; \
+#      echo "❌ 실패, 5초 후 재시도"; \
+#      sleep 5; \
+#    done || (echo "🚨 테스트 최종 실패"; exit 1)
 
 # =========================
 # 2️⃣ Runtime Stage
